@@ -1,0 +1,78 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.dong.spring.board.mapper.BoardMapper">
+	<select id="boardList" resultType="kr.dong.spring.board.dto.BoardDto">
+		SELECT BOARD_IDX, TITLE, HIT_CNT, to_char(CREATE_DATETIME, 'YYYY-MM-DD HH24:MI')  CREATE_DATETIME
+		FROM BOARD.T_BOARD WHERE DELETE_YN = 'N' ORDER BY 4 DESC
+	</select>
+
+	<insert id="boardInsert" parameterType="kr.dong.spring.board.dto.BoardDto">
+		<selectKey keyProperty="boardIdx" resultType="integer" order="BEFORE">
+			SELECT BOARD_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		
+	    INSERT INTO T_BOARD
+		(BOARD_IDX, TITLE, CONTENTS, HIT_CNT, CREATE_DATETIME, CREATOR_ID, DELETE_YN)
+		VALUES(#{boardIdx}, #{title},#{contents}, 0 , sysdate , 'user', 'N' )
+	</insert>
+
+	<select id="boardDetail" parameterType="int" resultType="kr.dong.spring.board.dto.BoardDto">
+		SELECT BOARD_IDX, TITLE, CONTENTS, HIT_CNT, to_char(CREATE_DATETIME, 'YYYY-MM-DD HH24:MI')  CREATE_DATETIME, CREATOR_ID, DELETE_YN
+		FROM BOARD.T_BOARD WHERE BOARD_IDX = #{boardIdx} AND DELETE_YN = 'N'
+	</select>
+
+
+	<update id="boardUpdate" parameterType="kr.dong.spring.board.dto.BoardDto">
+		UPDATE T_BOARD
+		SET TITLE=#{title}, CONTENTS=#{contents} 
+		WHERE BOARD_IDX=#{boardIdx}
+	</update>
+
+	<delete id="boardDelete" parameterType="int">
+		DELETE FROM T_BOARD	WHERE BOARD_IDX=#{boardIdx}
+	</delete>
+
+	<update id="updateHit" parameterType="int">
+		UPDATE T_BOARD
+		SET HIT_CNT=HIT_CNT+1
+		WHERE BOARD_IDX=#{boardIdx}
+	</update>
+
+	<insert id="boardFileInsert" parameterType="kr.dong.spring.board.dto.FileDto">
+		INSERT INTO BOARD.T_FILE
+		(IDX, BOARD_IDX, ORIGINAL_FILE_NAME, STORED_FILE_PATH, FILE_SIZE, CREATOR_ID, CREATE_DATETIME, DELETED_YN)
+		SELECT FILE_SEQ.NEXTVAL, A.*
+		FROM (      
+		<foreach item="item" collection="list" separator=" UNION ALL  ">
+		SELECT #{item.boardIdx} BOARD_IDX, 
+			   #{item.originalFileName} ORIGINAL_FILE_NAME, 
+			   #{item.storedFilePath} STORED_FILE_PATH, 
+			   #{item.fileSize} FILE_SIZE, 
+			   'admin' CREATOR_ID,  
+			   SYSDATE CREATE_DATETIME,
+			   'N' DELETED_YN
+		FROM DUAL
+		</foreach>
+		) A
+
+	</insert>
+
+	<select id="selectBoardFileList" parameterType="int" resultType="kr.dong.spring.board.dto.FileDto">
+		SELECT IDX, BOARD_IDX, ORIGINAL_FILE_NAME, STORED_FILE_PATH, ROUND(FILE_SIZE / 1024) FILE_SIZE, CREATOR_ID, 
+		to_char(CREATE_DATETIME, 'YYYY-MM-DD HH24:MI')  CREATE_DATETIME, DELETED_YN
+		FROM BOARD.T_FILE
+		WHERE DELETED_YN = 'N' 
+		     AND BOARD_IDX=#{boardIdx}
+		ORDER BY IDX 		
+	</select>
+	
+	
+	<select id="selectFileInfo" parameterType="map" resultType="kr.dong.spring.board.dto.FileDto">
+		SELECT IDX, BOARD_IDX, ORIGINAL_FILE_NAME, STORED_FILE_PATH, FILE_SIZE
+		FROM BOARD.T_FILE
+		WHERE DELETED_YN = 'N' AND IDX=#{idx} AND BOARD_IDX=#{boardIdx}
+		ORDER BY IDX 		
+	</select>
+</mapper>

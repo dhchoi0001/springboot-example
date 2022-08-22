@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+</head>  
+  <th:block layout:fragment="css"></th:block>
+  <th:block layout:fragment="script"></th:block>
+
+  <div layout:fragment="content">
+	 <div class="mt-2"></div>
+	 <div class="container">
+		 <div class="row justify-content-center">
+			 <div class="col-md-6">
+				 <div class="card">
+					 <header class="card-header">
+					 	<h4 class="card-title mt-2">Access Denied</h4>
+					</header>
+					 <article class="card-body">
+				
+					<div class="form-group row">
+						<label class="col-sm-6 col-form-label">관리자로 로그인하세요</label> 
+					</div>
+					
+					<div class="form-group row">
+						<label for="password" class="col-sm-6 col-form-label">로그인할려면 아래 로그인 버튼을 클릭하세요</label>
+					</div>
+			
+					<div class="form-group row">
+						<div class="col-sm-6">
+						<label class="col-sm-6 col-form-label">로그인할려면 <a th:href="@{/login/login}"><h4>여기</h4></a>를 클릭하세요</label>
+						</div>
+					</div>
+					</article>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("#btn").on("click", function(){
+			location.href="/login/login";
+			});
+	});
+	</script>
+</html>

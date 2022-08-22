@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+</head>  
+  <th:block layout:fragment="css"></th:block>
+  <th:block layout:fragment="script"></th:block>
+
+  <div layout:fragment="content">
+	<div class="container">
+		<h2>사용자 정보 등록</h2>
+		<form id="frm" name="frm" method="post" action="/user/userInsert" >
+			<table class="board_detail">
+				<colgroup>
+					<col width="20%" />
+					<col width="*" />
+				</colgroup>
+				<tr>
+					<td>아이디</td>
+					<td><input type="text" id="id" name="id" /></td>
+				</tr>
+				<tr>
+					<td>이름</td>
+					<td><input type="text" id="name" name="name" /></td>
+				</tr>
+				<tr>
+					<td>패스워드</td>
+					<td><input type="password" id="pw" name="pw" /></td>
+				</tr>
+				<tr>
+					<td>이메일</td>
+					<td><input type="text" id="email" name="email" /></td>
+				</tr>
+				<tr>
+					<td>권한</td>
+					<td><input type="text" id="role" name="role" /></td>
+				</tr>
+			</table>
+			<input type="submit" id="submit" name="submit" value="저장" class=btn >
+		</form>
+	</div>
+	</div>
+
+	</div>
+</html>

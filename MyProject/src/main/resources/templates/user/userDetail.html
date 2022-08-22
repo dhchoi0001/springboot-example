@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+</head>  
+  <th:block layout:fragment="css"></th:block>
+  <th:block layout:fragment="script"></th:block>
+
+  <div layout:fragment="content">
+	<div class="container">
+		<h2>사용자 상세</h2>
+		<form id="frm" name="frm" method="post">
+			<table class="board_detail">
+				<colgroup>
+					<col width="20%" />
+					<col width="*" />
+				</colgroup>
+				<tr>
+					<th scope="row">아이디</th>
+					<td><input type="text" id="id" name="id"  th:value="${user.id}" disable readonly="readonly"/></td>
+				</tr>
+				<tr>
+					<th scope="row">이름</th>
+					<td><input type="text" id="name" name="name"  th:value="${user.name}" /></td>
+				</tr>
+				<tr>
+					<th scope="row">패스워드</th>
+					<td><input type="text" id="pw" name="pw"  th:value="${user.pw}"/></td>
+				</tr>
+				<tr>
+					<th scope="row">이메일</th>
+					<td><input type="text" id="email" name="email"  th:value="${user.email}" /></td>
+				</tr>
+				<tr>
+					<th scope="row">권한</th>
+					<td><input type="text" id="role" name="role"  th:value="${user.role}" /></td>
+				</tr>
+				<tr>
+					<th scope="row">가입일</th>
+					<td><input type="text" id="role" name="role"  th:value="${user.joinDate}"  readonly="readonly"/></td>
+				</tr>
+			</table>
+			
+			<input type="button" id="list" name="list" value="목록으로" class=btn />
+			<input type="button" id="update" name="edit" value="수정하기" class=btn />
+			<input type="button" id="delete" name="delete" value="삭제하기" class=btn />
+			
+		</form>
+	</div>
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("#list").on("click", function(){
+			location.href="/user/userList";
+		});
+		
+		$("#update").on("click", function(){
+			var frm = $("#frm")[0];
+			frm.action="/user/userUpdate";
+			frm.submit();
+		});
+		
+		$("#delete").on("click", function(){
+			var frm = $("#frm")[0];
+			frm.action="/user/userDelete/" + frm.id.value;
+			frm.submit();
+		});
+		
+	});
+	</script>
+	</div>
+</html>

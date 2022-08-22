@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/layout}">
+<head>
+<meta charset="UTF-8">
+</head>  
+  <th:block layout:fragment="css"></th:block>
+  <th:block layout:fragment="script"></th:block>
+	<body class="d-flex flex-column min-vh-100">
+  <div layout:fragment="content">
+   	<div style="vertical-align:middle;">
+        <div class="bodytitle text-center py-5" style="text-align: center; width:30%;background-color: rgba(0, 0, 0, 0.5);">
+         <h2> 게시판 관리 샘플 어플리케이션</h2>
+        </div>
+  	</div>	
+ </div>
+  </body>
+</html>
